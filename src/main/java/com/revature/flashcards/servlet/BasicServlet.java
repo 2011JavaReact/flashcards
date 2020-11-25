@@ -13,12 +13,19 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Optional;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
 
 abstract class BasicServlet extends HttpServlet {
   protected static Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+  static {
+    BasicConfigurator.configure();
+  }
 
   protected static void voidCallback(HttpServletResponse resp,
       VoidCallback cb) {
@@ -167,6 +174,15 @@ abstract class BasicServlet extends HttpServlet {
     } catch (Throwable e) {
       return null;
     }
+  }
+
+  @Override
+  protected void service(HttpServletRequest req, HttpServletResponse resp)
+      throws ServletException, IOException {
+    super.service(req, resp);
+    Logger lgr = Logger.getLogger(getClass());
+    lgr.info(String.format("[%s] [%d] %s", req.getMethod(), resp.getStatus(),
+        req.getRequestURI() + "?" + req.getQueryString()));
   }
 
   @FunctionalInterface
