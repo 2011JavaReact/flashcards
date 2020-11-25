@@ -36,6 +36,7 @@ public class UserDao extends BasicDao<UserInDb, UserInRequest> {
       throws SQLException {
     stmt.setString(1, obj.username);
     stmt.setString(2, obj.password);
+    stmt.setBoolean(3, false);
   }
 
   @Override
