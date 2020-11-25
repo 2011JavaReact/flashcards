@@ -181,8 +181,15 @@ abstract class BasicServlet extends HttpServlet {
       throws ServletException, IOException {
     super.service(req, resp);
     Logger lgr = Logger.getLogger(getClass());
+    String route = req.getRequestURI();
+    String qs = req.getQueryString();
+
+    if (qs != null) {
+      route += "?" + qs;
+    }
+
     lgr.info(String.format("[%s] [%d] %s", req.getMethod(), resp.getStatus(),
-        req.getRequestURI() + "?" + req.getQueryString()));
+        route));
   }
 
   @FunctionalInterface

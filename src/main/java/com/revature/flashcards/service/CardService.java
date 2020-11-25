@@ -2,6 +2,7 @@ package com.revature.flashcards.service;
 
 import com.revature.flashcards.dao.CardDao;
 import com.revature.flashcards.dao.CardTemplateDao;
+import com.revature.flashcards.dao.UserDao;
 import com.revature.flashcards.exception.ServiceException;
 import com.revature.flashcards.model.Auth;
 import com.revature.flashcards.model.Card;
@@ -18,13 +19,17 @@ import java.util.Set;
 public class CardService extends BasicService<CardDao, Card, CardInRequest> {
   private final CardTemplateDao cardTemplateDao;
 
+  private final UserDao userDao;
+
   public CardService() {
-    this(new CardDao(), new CardTemplateDao());
+    this(new CardDao(), new CardTemplateDao(), new UserDao());
   }
 
-  public CardService(CardDao dao, CardTemplateDao cardTemplateDao) {
+  public CardService(CardDao dao, CardTemplateDao cardTemplateDao,
+      UserDao userDao) {
     super(dao);
     this.cardTemplateDao = cardTemplateDao;
+    this.userDao = userDao;
   }
 
   public List<Card> getAllForUser(Auth auth, int userID)
@@ -36,6 +41,10 @@ public class CardService extends BasicService<CardDao, Card, CardInRequest> {
     }
 
     try {
+      if (!userDao.get(userID).isPresent()) {
+        throw new ServiceException(APIError.NOT_FOUND, "user does not exist");
+      }
+
       ArrayList<Card> out = new ArrayList<>();
       Set<Integer> templateIdsForThisUser = new HashSet<>();
 
