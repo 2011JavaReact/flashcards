@@ -28,6 +28,8 @@ abstract class BasicServlet extends HttpServlet {
       return;
     }
 
+    resp.setContentType("application/json");
+
     try {
       Object answer = cb.execute();
       writer.append(gson.toJson(new APIResponse(answer)));
@@ -48,6 +50,8 @@ abstract class BasicServlet extends HttpServlet {
     if (writer == null || reader == null) {
       return;
     }
+
+    resp.setContentType("application/json");
 
     try {
       body = gson.fromJson(reader, reqBodyClass);
