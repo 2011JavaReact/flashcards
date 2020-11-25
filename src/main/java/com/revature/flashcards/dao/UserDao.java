@@ -14,8 +14,7 @@ public class UserDao extends BasicDao<UserInDb, UserInRequest> {
         "users",
         "user_id",
 
-        "UPDATE users SET user_name = ?, user_password = ?, user_admin = ? " +
-            "WHERE user_id = ?",
+        "UPDATE users SET user_name = ?, user_password = ? WHERE user_id = ?",
 
         "INSERT INTO users (user_name, user_password, user_admin) VALUES " +
             "(?, ?, ?)"
@@ -37,14 +36,13 @@ public class UserDao extends BasicDao<UserInDb, UserInRequest> {
       throws SQLException {
     stmt.setString(1, obj.username);
     stmt.setString(2, obj.password);
-    stmt.setBoolean(3, false);
   }
 
   @Override
   protected void prepareUpdate(PreparedStatement stmt, UserInRequest obj,
       int id) throws SQLException {
     prepareInsert(stmt, obj);
-    stmt.setInt(4, id);
+    stmt.setInt(3, id);
   }
 
   public Optional<UserInDb> getByUsername(String username) throws SQLException {
