@@ -153,7 +153,16 @@ abstract class BasicServlet extends HttpServlet {
    */
   protected Auth getAuth(HttpServletRequest req) {
     try {
-      String[] tokens = req.getHeader("Authorization").split(" ");
+      String[] tokens;
+
+      // edit your postman collection and add this to the prerequest script
+      // pm.request.headers.add({ key: 'Postman-Auth', value: 'Bearer ' + pm.environment.get('jwt') });
+      // this assumes you have environment var jwt set to a jwt token.
+      if (req.getHeader("Postman-Auth") != null) {
+        tokens = req.getHeader("Postman-Auth").split(" ");
+      } else {
+        tokens = req.getHeader("Authorization").split(" ");
+      }
       return JwtUtil.decode(tokens[tokens.length - 1], Config.value().jwtKey);
     } catch (Throwable e) {
       return null;

@@ -1,16 +1,16 @@
 package com.revature.flashcards.servlet;
 
 import com.revature.flashcards.model.Auth;
-import com.revature.flashcards.model.CardTemplateInRequest;
-import com.revature.flashcards.service.CardTemplateService;
+import com.revature.flashcards.model.CardInRequest;
+import com.revature.flashcards.service.CardService;
 import java.util.Optional;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/card_templates/*")
-public class CardTemplateServlet extends BasicServlet {
-  private final CardTemplateService service = new CardTemplateService();
+@WebServlet("/cards/*")
+public class CardServlet extends BasicServlet {
+  private final CardService service = new CardService();
 
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
@@ -38,13 +38,13 @@ public class CardTemplateServlet extends BasicServlet {
 
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
-    bodyCallback(req, resp, CardTemplateInRequest.class,
+    bodyCallback(req, resp, CardInRequest.class,
         (o) -> service.create(getAuth(req), o));
   }
 
   @Override
   protected void doPut(HttpServletRequest req, HttpServletResponse resp) {
-    bodyCallback(req, resp, CardTemplateInRequest.class, (o) -> {
+    bodyCallback(req, resp, CardInRequest.class, (o) -> {
       int id = getPathIdOrThrow(req);
       return service.update(getAuth(req), o, id);
     });

@@ -113,7 +113,7 @@ paths:
       summary: delete a card
       responses:
         200:
-          description: "the updated card"
+          description: ""
           content:
             application/json:
               schema:
@@ -237,7 +237,7 @@ paths:
       summary: delete a card template
       responses:
         200:
-          description: "the updated card template"
+          description: ""
           content:
             application/json:
               schema:
@@ -354,7 +354,7 @@ paths:
       summary: delete a user
       responses:
         200:
-          description: "the updated user"
+          description: ""
           content:
             application/json:
               schema:
@@ -403,13 +403,10 @@ components:
       type: object
       required:
         - id
-        - userID
         - templateID
         - data
       properties:
         id:
-          type: integer
-        userID:
           type: integer
         templateID:
           type: integer
@@ -446,12 +443,9 @@ components:
     CardInRequest:
       type: object
       required:
-        - userID
         - templateID
         - data
       properties:
-        userID:
-          type: integer
         templateID:
           type: integer
         data:
