@@ -7,6 +7,7 @@ import com.revature.flashcards.model.User;
 import com.revature.flashcards.model.UserInDb;
 import com.revature.flashcards.model.UserInRequest;
 import com.revature.flashcards.response.APIError;
+import com.revature.flashcards.util.PasswordUtil;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +63,7 @@ public class UserService extends BasicService<UserDao, User, UserInRequest> {
         throw new ServiceException(APIError.CONFLICT, "A user with " +
             "that username already exists!");
       }
-      UserInDb u = dao.create(o);
+      UserInDb u = dao.create(safeUser(o));
       return new User(u.id, u.username, u.admin);
     } catch (SQLException e) {
       throw new ServiceException(e);
@@ -72,6 +73,12 @@ public class UserService extends BasicService<UserDao, User, UserInRequest> {
   @Override
   public User update(Auth auth, UserInRequest o, int id)
       throws ServiceException {
+    if (auth == null) {
+      throw new ServiceException(APIError.UNAUTHORIZED);
+    } else if (!auth.admin && id != auth.userID) {
+      throw new ServiceException(APIError.FORBIDDEN);
+    }
+
     try {
       Optional<UserInDb> tmp = dao.getByUsername(o.username);
 
@@ -79,8 +86,7 @@ public class UserService extends BasicService<UserDao, User, UserInRequest> {
         throw new ServiceException(APIError.CONFLICT, "A user with " +
             "that username already exists!");
       }
-
-      UserInDb latest = dao.update(id, o);
+      UserInDb latest = dao.update(id, safeUser(o));
       return new User(latest.id, latest.username, latest.admin);
     } catch (SQLException e) {
       throw new ServiceException(e);
@@ -100,5 +106,9 @@ public class UserService extends BasicService<UserDao, User, UserInRequest> {
     } catch (SQLException e) {
       throw new ServiceException(e);
     }
+  }
+
+  private UserInRequest safeUser(UserInRequest o) {
+    return new UserInRequest(o.username, PasswordUtil.hash(o.password));
   }
 }

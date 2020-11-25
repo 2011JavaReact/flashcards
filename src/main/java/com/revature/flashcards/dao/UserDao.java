@@ -33,11 +33,18 @@ public class UserDao extends BasicDao<UserInDb, UserInRequest> {
   }
 
   @Override
-  protected void prepare(PreparedStatement stmt, UserInRequest obj)
+  protected void prepareInsert(PreparedStatement stmt, UserInRequest obj)
       throws SQLException {
     stmt.setString(1, obj.username);
     stmt.setString(2, obj.password);
     stmt.setBoolean(3, false);
+  }
+
+  @Override
+  protected void prepareUpdate(PreparedStatement stmt, UserInRequest obj,
+      int id) throws SQLException {
+    prepareInsert(stmt, obj);
+    stmt.setInt(4, id);
   }
 
   public Optional<UserInDb> getByUsername(String username) throws SQLException {

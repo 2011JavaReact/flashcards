@@ -36,9 +36,18 @@ abstract class BasicDao<T, P> {
 
   /**
    * replace ? marks in update/insert statements by setting the values
-   * for the given obj on the given statement.
+   * for the given obj on the given statement. will be used to insert
+   * into the database
    */
-  protected abstract void prepare(PreparedStatement stmt, P obj)
+  protected abstract void prepareInsert(PreparedStatement stmt, P obj)
+      throws SQLException;
+
+  /**
+   * replace ? marks in update/insert statements by setting the values
+   * for the given obj on the given statement. will be used to update
+   * entity with the given id in the database.
+   */
+  protected abstract void prepareUpdate(PreparedStatement stmt, P obj, int id)
       throws SQLException;
 
   public final List<T> getAll() throws SQLException {
@@ -73,7 +82,7 @@ abstract class BasicDao<T, P> {
       PreparedStatement stmt = conn.prepareStatement(insertSQL,
           Statement.RETURN_GENERATED_KEYS);
 
-      prepare(stmt, obj);
+      prepareInsert(stmt, obj);
       conn.setAutoCommit(false);
 
       if (stmt.executeUpdate() != 1) {
@@ -98,7 +107,7 @@ abstract class BasicDao<T, P> {
       PreparedStatement stmt = conn.prepareStatement(updateSQL,
           Statement.RETURN_GENERATED_KEYS);
 
-      prepare(stmt, obj);
+      prepareUpdate(stmt, obj, id);
 
       if (stmt.executeUpdate() != 1 || !stmt.getGeneratedKeys().next()) {
         throw new SQLException("update for row in " + tableName + " failed.");
@@ -114,7 +123,7 @@ abstract class BasicDao<T, P> {
 
     try (Connection conn = manager.getConnection()) {
       Statement stmt = conn.createStatement();
-      stmt.executeQuery(q);
+      stmt.execute(q);
     }
   }
 }

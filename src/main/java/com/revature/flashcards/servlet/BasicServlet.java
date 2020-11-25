@@ -2,11 +2,13 @@ package com.revature.flashcards.servlet;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.revature.flashcards.Config;
 import com.revature.flashcards.exception.ServiceException;
 import com.revature.flashcards.model.Auth;
 import com.revature.flashcards.response.APIError;
 import com.revature.flashcards.response.APIResponse;
 import com.revature.flashcards.response.APIResponseError;
+import com.revature.flashcards.util.JwtUtil;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -38,7 +40,7 @@ abstract class BasicServlet extends HttpServlet {
   }
 
   protected static <T> void bodyCallback(HttpServletRequest req,
-      HttpServletResponse resp, Class<T> cls, BodyCallback<T> cb) {
+      HttpServletResponse resp, Class<T> reqBodyClass, BodyCallback<T> cb) {
     PrintWriter writer = getWriter(resp);
     BufferedReader reader = getReader(req, resp);
     T body;
@@ -48,7 +50,7 @@ abstract class BasicServlet extends HttpServlet {
     }
 
     try {
-      body = gson.fromJson(reader, cls);
+      body = gson.fromJson(reader, reqBodyClass);
     } catch (Throwable e) {
       onError(resp, writer, "couldnt parse body", APIError.BAD_REQUEST);
       return;
@@ -63,8 +65,6 @@ abstract class BasicServlet extends HttpServlet {
     } catch (Throwable e) {
       onError(resp, writer, e.getMessage(), APIError.UNKNOWN);
     }
-
-    gson.fromJson(reader, cls);
   }
 
   private static void onError(HttpServletResponse resp, PrintWriter writer,
@@ -118,7 +118,7 @@ abstract class BasicServlet extends HttpServlet {
    * @return nullable if no id could be parsed from the given request path. if
    *     it could be parsed, the id is returned.
    */
-  protected Optional<Integer> getResourceID(HttpServletRequest req) {
+  protected Optional<Integer> getPathId(HttpServletRequest req) {
     try {
       String[] tokens = req.getRequestURI().split("/");
       int id = Integer.parseInt(tokens[tokens.length - 1]);
@@ -128,12 +128,32 @@ abstract class BasicServlet extends HttpServlet {
     }
   }
 
+  protected int getPathIdOrThrow(HttpServletRequest req)
+      throws ServiceException {
+    return getPathId(req).orElseThrow(() ->
+        new ServiceException(APIError.BAD_REQUEST,
+            "required path id not present in url"));
+  }
+
+  protected Optional<Integer> getIntQueryParam(HttpServletRequest req,
+      String qParam) {
+    try {
+      return Optional.of(Integer.parseInt(req.getParameter(qParam)));
+    } catch (Throwable e) {
+      return Optional.empty();
+    }
+  }
+
   /**
    * @return nullable Auth for the given request
    */
   protected Auth getAuth(HttpServletRequest req) {
-    // TODO
-    return null;
+    try {
+      String[] tokens = req.getHeader("Authorization").split(" ");
+      return JwtUtil.decode(tokens[tokens.length - 1], Config.value().jwtKey);
+    } catch (Throwable e) {
+      return null;
+    }
   }
 
   @FunctionalInterface

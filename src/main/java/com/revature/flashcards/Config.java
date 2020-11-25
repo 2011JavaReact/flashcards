@@ -16,7 +16,7 @@ public class Config {
   /**
    * how many milliseconds a jwt can last before its expired.
    */
-  public final long jwtTTLMillis = 60000;
+  public final long jwtTTLMillis = 7 * 24 * 60 * 60000;
 
   /**
    * path to dummy resource .sql file relative to resources dir

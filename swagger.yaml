@@ -1,0 +1,648 @@
+openapi: '3.0.0'
+info:
+  version: 1.0.0
+  title: "flashcards api"
+  description: "This is a api"
+servers:
+  - url: 'http://localhost:4321'
+
+paths:
+  /cards:
+    get:
+      security:
+        - bearerAuth: []
+      summary: get cards. if no userId query param is provided, cards for all users will be returned.
+      parameters:
+        - in: query
+          name: userId
+          schema:
+            type: integer
+          description: "the user you want to retrieve the cards for"
+      responses:
+        200:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CardListResponse"
+        400:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIErrorResponse"
+
+    post:
+      security:
+        - bearerAuth: []
+      summary: create a card
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CardInRequest"
+      responses:
+        200:
+          description: "the created card"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CardResponse"
+        400:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIErrorResponse"
+
+  /cards/{cardId}:
+    parameters:
+      - in: path
+        name: cardId
+        schema:
+          type: integer
+        required: true
+        description: represents the card you want to do an HTTP method on
+
+    get:
+      security:
+        - bearerAuth: []
+      summary: get a card
+      responses:
+        200:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CardResponse"
+        400:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIErrorResponse"
+
+    put:
+      security:
+        - bearerAuth: []
+      summary: update the card
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CardInRequest"
+      responses:
+        200:
+          description: "the updated card"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CardResponse"
+        400:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIErrorResponse"
+
+    delete:
+      security:
+        - bearerAuth: []
+      summary: delete a card
+      responses:
+        200:
+          description: "the updated card"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmptySuccess"
+        400:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIErrorResponse"
+
+
+
+
+
+
+
+  /card_templates:
+    get:
+      security:
+        - bearerAuth: []
+      summary: get card templates. if no userId query param is provided, templates for all users will be returned.
+      parameters:
+        - in: query
+          name: userId
+          schema:
+            type: integer
+          description: "the user you want to retrieve the templates for"
+      responses:
+        200:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CardTemplateListResponse"
+        400:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIErrorResponse"
+
+    post:
+      security:
+        - bearerAuth: []
+      summary: create a card template
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CardTemplateInRequest"
+      responses:
+        200:
+          description: "the created card template"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CardTemplateResponse"
+        400:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIErrorResponse"
+
+  /card_templates/{cardTemplateId}:
+    parameters:
+      - in: path
+        name: cardTemplateId
+        schema:
+          type: integer
+        required: true
+        description: represents the card template you want to do an HTTP method on
+
+    get:
+      security:
+        - bearerAuth: []
+      summary: get a card template
+      responses:
+        200:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CardTemplateResponse"
+        400:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIErrorResponse"
+
+    put:
+      security:
+        - bearerAuth: []
+      summary: update a card template
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CardTemplateInRequest"
+      responses:
+        200:
+          description: "the updated card template"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CardTemplateResponse"
+        400:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIErrorResponse"
+
+    delete:
+      security:
+        - bearerAuth: []
+      summary: delete a card template
+      responses:
+        200:
+          description: "the updated card template"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmptySuccess"
+        400:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIErrorResponse"
+
+
+
+
+
+
+
+
+  /users:
+    get:
+      security:
+        - bearerAuth: []
+      summary: get all users
+      responses:
+        200:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserListResponse"
+        400:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIErrorResponse"
+
+    post:
+      summary: create a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserInRequest"
+      responses:
+        200:
+          description: "the created user"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+        400:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIErrorResponse"
+
+  /users/{userId}:
+    parameters:
+      - in: path
+        name: userId
+        schema:
+          type: integer
+        required: true
+        description: represents the user you want to do an HTTP method on
+
+    get:
+      security:
+        - bearerAuth: []
+      summary: get a user
+      responses:
+        200:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+        400:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIErrorResponse"
+
+    put:
+      security:
+        - bearerAuth: []
+      summary: update a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserInRequest"
+      responses:
+        200:
+          description: "the updated user"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+        400:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIErrorResponse"
+
+    delete:
+      security:
+        - bearerAuth: []
+      summary: delete a user
+      responses:
+        200:
+          description: "the updated user"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmptySuccess"
+        400:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIErrorResponse"
+
+
+
+  /login:
+    post:
+      summary: "recieve a jwt to authenticate to most endpoints in this api"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginPostRequest"
+      responses:
+        200:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginPostResponse"
+        400:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIErrorResponse"
+
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Card:
+      type: object
+      required:
+        - id
+        - userID
+        - templateID
+        - data
+      properties:
+        id:
+          type: integer
+        userID:
+          type: integer
+        templateID:
+          type: integer
+        data:
+          type: string
+
+    CardList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Card'
+
+    CardResponse:
+      type: object
+      required:
+        - success
+      properties:
+        status:
+          type: integer
+          default: 200
+        success:
+          $ref: '#/components/schemas/Card'
+
+    CardListResponse:
+      type: object
+      required:
+        - success
+      properties:
+        status:
+          type: integer
+          default: 200
+        success:
+          $ref: '#/components/schemas/CardList'
+
+    CardInRequest:
+      type: object
+      required:
+        - userID
+        - templateID
+        - data
+      properties:
+        userID:
+          type: integer
+        templateID:
+          type: integer
+        data:
+          type: string
+
+
+
+
+    CardTemplate:
+      type: object
+      required:
+        - id
+        - userID
+        - description
+        - front
+        - back
+      properties:
+        id:
+          type: integer
+        userID:
+          type: integer
+        description:
+          type: string
+        front:
+          type: string
+        back:
+          type: string
+
+    CardTemplateList:
+      type: array
+      items:
+        $ref: '#/components/schemas/CardTemplate'
+
+    CardTemplateResponse:
+      type: object
+      required:
+        - success
+      properties:
+        status:
+          type: integer
+          default: 200
+        success:
+          $ref: '#/components/schemas/CardTemplate'
+
+    CardTemplateListResponse:
+      type: object
+      required:
+        - success
+      properties:
+        status:
+          type: integer
+          default: 200
+        success:
+          $ref: '#/components/schemas/CardTemplateList'
+
+    CardTemplateInRequest:
+      type: object
+      required:
+        - userID
+        - description
+        - front
+        - back
+      properties:
+        userID:
+          type: integer
+        description:
+          type: string
+        front:
+          type: string
+        back:
+          type: string
+
+
+
+
+    User:
+      type: object
+      required:
+        - id
+        - username
+        - admin
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        admin:
+          type: boolean
+
+    UserList:
+      type: array
+      items:
+        $ref: '#/components/schemas/User'
+
+    UserResponse:
+      type: object
+      required:
+        - success
+      properties:
+        status:
+          type: integer
+          default: 200
+        success:
+          $ref: '#/components/schemas/User'
+
+    UserListResponse:
+      type: object
+      required:
+        - success
+      properties:
+        status:
+          type: integer
+          default: 200
+        success:
+          $ref: '#/components/schemas/UserList'
+
+    UserInRequest:
+      type: "object"
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: "string"
+        password:
+          type: string
+
+
+
+
+    LoginPostRequest:
+      type: "object"
+      required:
+        - "username"
+        - "password"
+      properties:
+        username:
+          type: "string"
+        password:
+          type: "string"
+
+    LoginPostResponse:
+      type: "object"
+      required:
+        - "success"
+      properties:
+        status:
+          type: integer
+          default: 200
+        success:
+          type: "string"
+          default: 'eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MDYxMTkwMDEsImV4cCI6MTYwNjExOTA2MSwiYXV0aCI6IntcInVzZXJJRFwiOjIsXCJhZG1pblwiOmZhbHNlfSJ9.zAh8yvcL5PkEuidNOwRs6rxc1gZ1ztMeGUno_dzXnZo'
+
+
+
+
+    EmptySuccess:
+      type: "object"
+      required:
+        - "success"
+      properties:
+        status:
+          type: integer
+          default: 200
+
+
+
+
+    APIErrorResponse:
+      type: "object"
+      required:
+        - error
+      properties:
+        status:
+          type: integer
+          minimum: 400
+          maximum: 600
+          default: 400
+        error:
+          type: object
+          required:
+            - type
+            - msg
+          properties:
+            type:
+              type: string
+              enum:
+                - BAD_REQUEST
+                - UNAUTHORIZED
+                - FORBIDDEN
+                - NOT_FOUND
+                - CONFLICT
+            msg:
+              type: string
