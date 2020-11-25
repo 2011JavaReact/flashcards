@@ -18,6 +18,9 @@ that might be used by card {
 ### schema
 <img src="https://user-images.githubusercontent.com/25497140/100248798-c362e880-2ef0-11eb-9715-cf09034b598e.png"/>
 
+### api documentation
+you can view this by pasting the contents of `./swagger.yaml` into the editor at https://editor.swagger.io/
+
 ### prerequisites
 The only system requirements you need are `java 8` and `maven`. There is a maven plugin I've included that when run, starts an embedded tomcat server which means you dont need to download tomcat locally.
 
