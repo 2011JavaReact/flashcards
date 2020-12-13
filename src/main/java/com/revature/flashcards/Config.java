@@ -69,7 +69,7 @@ public class Config {
   }
 
   private String getEnv(String var) {
-    String ret = System.getenv(var);
+    String ret = System.getProperty(var);
     if (ret == null) {
       throw new RuntimeException(String.format("env var %s not set!", var));
     }

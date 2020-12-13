@@ -1,3 +1,5 @@
+![Build Status](http://18.188.8.84:8080/jenkins/buildStatus/icon?job=flashcards-api/macy&subject=%5Bmacy%5D%20took%20$%7Bduration%7D%20about%20$%7BstartTime%7D%20ago)
+
 ### flashcards
 This is a backend for a flashcard system. You can sign up with an account and login to create/manage your own flashcards.
 
