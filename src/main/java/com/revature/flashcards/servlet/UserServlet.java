@@ -14,18 +14,11 @@ public class UserServlet extends BasicServlet {
 
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
-    try {
-      resp.getWriter().append(System.getProperty("DB_NAME"));
-    } catch (Exception e) {
-
-    }
-    return;
-
-    // voidCallback(resp, () -> {
-    //   Optional<Integer> oid = getPathId(req);
-    //   Auth a = getAuth(req);
-    //   return oid.isPresent() ? service.get(a, oid.get()) : service.getAll(a);
-    // });
+    voidCallback(resp, () -> {
+      Optional<Integer> oid = getPathId(req);
+      Auth a = getAuth(req);
+      return oid.isPresent() ? service.get(a, oid.get()) : service.getAll(a);
+    });
   }
 
   @Override

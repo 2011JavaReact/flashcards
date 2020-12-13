@@ -24,11 +24,11 @@ public class UserService extends BasicService<UserDao, User, UserInRequest> {
 
   @Override
   public List<User> getAll(Auth auth) throws ServiceException {
-    if (auth == null) {
-      throw new ServiceException(APIError.UNAUTHORIZED);
-    } else if (!auth.admin) {
-      throw new ServiceException(APIError.FORBIDDEN);
-    }
+    // if (auth == null) {
+    //   throw new ServiceException(APIError.UNAUTHORIZED);
+    // } else if (!auth.admin) {
+    //   throw new ServiceException(APIError.FORBIDDEN);
+    // }
 
     try {
       ArrayList<User> out = new ArrayList<>();
