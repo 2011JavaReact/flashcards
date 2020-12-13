@@ -15,7 +15,7 @@ public class UserServlet extends BasicServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
     try {
-      resp.getWriter().append("HELLO");
+      resp.getWriter().append(System.getProperty("DB_NAME"));
     } catch (Exception e) {
 
     }
