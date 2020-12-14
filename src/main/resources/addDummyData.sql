@@ -5,10 +5,10 @@ INSERT INTO users
 
 INSERT INTO card_templates
 (user_id, card_template_description, card_front_template, card_back_template) VALUES
-(1, 'mandarin', 'front', 'back'),
-(2, 'cantonese', 'front', 'back');
+(1, 'mandarin', '<div>what is the capitol of %%STATE%%</div>', '<div style="background-color:red">%%CAPITOL%%</div>'),
+(2, 'cantonese', '<div>%%FRONT%%</div>', '<div style="background-color:blue">%%BACK%%</div>');
 
 INSERT INTO cards
 (card_template_id, card_data) VALUES
-(1, 'some card data'),
-(2, 'some card data');
+(1, '{"STATE":"California","CAPITOL":"Sacramento"}'),
+(1, '{"STATE":"Texas","CAPITOL":"Austin"}');
