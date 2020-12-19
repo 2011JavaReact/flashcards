@@ -38,4 +38,5 @@ DB_USERNAME=postgres DB_PASSWORD=admin DB_NAME=flashcards \
 DB_USERNAME=postgres DB_PASSWORD=admin DB_NAME=flashcards \
     DB_URL="jdbc:postgresql://localhost:5432/" \
     mvn package tomcat7:run
-```
+```5
+6
